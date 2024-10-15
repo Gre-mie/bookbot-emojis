@@ -11,7 +11,20 @@ def open_file(file_path):
             return text_string.read()
     except FileNotFoundError:
         print(f"\n\033[38;5;{172}m{file_path} \033[31mFile Not Found\n\033[39m...")
-    
+
+# returns the number of times an emoji is used in all files
+def total_emoji_num(file_paths):
+    total = 0
+    # iterates through all the files in file_paths
+    for discord in file_paths:
+        for path in file_paths[discord]:
+            current_file = open_file(path)
+            # uses a regex that checks for anything that isn't a letter, number and specified punctuation chars
+            for char in current_file:
+                if re.match(r'[^\w\s\',-./#—:\[\]"<!>?()=&@%]', char):
+                    total += 1
+    return total
+
 def count_which_popular_emojis_I_use(file_paths):
     # List of top 10 emojis of 2023 from: https://www.meltwater.com/en/blog/top-emojis-2023
     top_ten_emojis = {'😊': 0, '✨': 0, '🥰': 0, '😍': 0, '🙏': 0, '🔥': 0, '❤️': 0, '🤣': 0, '😭': 0, '😂': 0}
@@ -58,7 +71,8 @@ def combine_dicts(dict_1, dict_2):
 
 
 def main():
-    #boot.dev_emoji_count = 
+    total_emojis = total_emoji_num(file_paths)
+    print(f"Total emojies in all messages: {total_emojis}")
     
     popular_emojis = count_which_popular_emojis_I_use(file_paths)
     print("\npopular emojis:", popular_emojis) # test
@@ -71,15 +85,6 @@ def main():
     my_emoji_count = combine_dicts(boot_dev_emojis, donthedeveloper_emojis)
     print("\nmy emojis:", my_emoji_count) # test
     
-
-
-
- #   for path in file_paths["boot.dev"]:
-  #      current_file = open_file(path)
-  #      for char in current_file:
-  #          if re.match(r'[^\w\s\',-./#—:\[\]"<!>?()=&]', char):
-  #              print(char)
-
 
     
         
