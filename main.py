@@ -43,6 +43,17 @@ def count_my_popular_emojis(discord):
 
     return count_emojis
 
+def combine_dicts(dict_1, dict_2):
+    combined = dict_1
+    # adds the two dict values together returning a new dict
+    for key in dict_2:
+        if key in combined:     
+            combined[key] += dict_2[key]
+        else:
+            combined[key] = dict_2[key]
+
+    return combined
+
 
 
 
@@ -50,15 +61,16 @@ def main():
     #boot.dev_emoji_count = 
     
     popular_emojis = count_which_popular_emojis_I_use(file_paths)
-    print("popular emojis:", popular_emojis) # test
+    print("\npopular emojis:", popular_emojis) # test
 
-    my_emoji_count = {}
     boot_dev_emojis = count_my_popular_emojis("boot.dev")
     donthedeveloper_emojis = count_my_popular_emojis("donthedeveloper")
-
-    print("my emojis:", my_emoji_count) # test
+    print("\ndonthedeveloper:", donthedeveloper_emojis) # test
     print("boot.dev:", boot_dev_emojis) # test
-    print("donthedeveloper:", donthedeveloper_emojis) # test
+
+    my_emoji_count = combine_dicts(boot_dev_emojis, donthedeveloper_emojis)
+    print("\nmy emojis:", my_emoji_count) # test
+    
 
 
 
