@@ -67,31 +67,61 @@ def combine_dicts(dict_1, dict_2):
 
     return combined
 
+# prints a dictinary formated as a horizontal bar chart
+def print_table(dict, title_string):
+    print(f"\n{title_string}\n")
+    # some emojies need an extra space to get the pipes to line up
+    need_space = ["\u2060", '❤️']
+    row = []
 
+    for item in dict:
+        row.append(item)
+
+        if item in need_space:
+            row.append(' ')
+
+        red = 200
+        green = 75
+        blue = 50
+        row.append(f"\033[38;2;{red};{green};{blue}m |")
+        # adds the number of hashes for the horizontal bar chart
+        for i in range(dict[item]):
+            bar_col = f"\033[38;2;{red};{green};{blue}m"
+
+            red -= 20
+            blue += 20
+            # prevents colour values becomeing more than their max
+            if red > 255:
+                red = red % 255
+            if blue > 255:
+                blue = blue % 255
+            row.append(bar_col)
+            row.append('#')
+
+        default_col = f"\033[39m"
+        row.append(default_col)
+        # prints the row
+        print("".join(row))
+        row = []
 
 
 def main():
+
+    print("\n---x---X---x--- Emoji Counter ---x---X---x---")
+
     total_emojis = total_emoji_num(file_paths)
     print(f"Total emojies in all messages: {total_emojis}")
     
+    # dictinaries of counted emojies
     popular_emojis = count_which_popular_emojis_I_use(file_paths)
-    print("\npopular emojis:", popular_emojis) # test
-
     boot_dev_emojis = count_my_popular_emojis("boot.dev")
     donthedeveloper_emojis = count_my_popular_emojis("donthedeveloper")
-    print("\ndonthedeveloper:", donthedeveloper_emojis) # test
-    print("boot.dev:", boot_dev_emojis) # test
-
     my_emoji_count = combine_dicts(boot_dev_emojis, donthedeveloper_emojis)
-    print("\nmy emojis:", my_emoji_count) # test
+
+    print_table(my_emoji_count, "---x--- Total emojis in all messages, September-October ---x---")
+    print_table(boot_dev_emojis, "---x--- Boot.dev, general-lounge, September-October ---x---")
+    print_table(donthedeveloper_emojis, "---x--- donthedeveloper, general channel, September-October ---x---")
+    print_table(popular_emojis, "---x--- 10 most popular emojis 2023, September-October ---x---")
     
-
-    
-        
-        
-
-
-
-
 
 main()
